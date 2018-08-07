@@ -13,7 +13,7 @@ namespace CreatePlan.Examples
     public class Rectangle
     {
         [TestMethod]
-        public void ExampleRectangle()
+        public void DrawPlan()
         {
 
 
@@ -22,21 +22,32 @@ namespace CreatePlan.Examples
             #region Draw
             var location = Helper.CreateLocationSeatplan("Testplan", "Background.jpg", 2792, 2792);
 
-            for (int j = 0; j < 7; j++)
-            {
-                if (j == 0 || j == 1)
-                    for (int i = 0; i < 4; i++)
-                    {
-                        var r = j * 4;
+            var r = 1;
 
-                        DrawTable(2037 - i * 384, 652 + j * 307, (i + 1) + r, location);
-                    }
-                else
+            var x = 477;
+
+            var y = 972;
+
+            var t = 252;
+
+            var n = 4;
+
+            for (int j = 0; j <4; j++)
+            {
+                n = 4;
+                t = 0;
+
+                if (j % 2 == 1)
                 {
-                    var r = (j+1)*3;
-                    for (int i = 0; i < 3; i++)
-                        DrawTable(2037 - (i + 1) * 384, 652 + j * 307,i+r , location);
+                    n = 5;
+                    t = 252;
                 }
+                    for (int i = 0; i < n; i++)
+                    {
+                        DrawTable(x - t + i * 540, y + j * 432,  r, location);
+                        r++;
+                    }
+               
             }
 
 
@@ -56,39 +67,28 @@ namespace CreatePlan.Examples
         public void DrawTable(int x, int y, int num, Model.LocationSeatplan location)
         {
 
-            var xDist = 94;
-            var xDist2 = 42;
-            var yDist = 68;
+            var xDist = 270;
+            var yDist = 65;
 
+            y = y - yDist;
 
+            //459       459
+            //972      1233     261         65.25
 
-            for (var key = 1; key <= 6; key++)
+            for (var key = 1; key <= 8; key++)
             {
                 switch (key)
                 {
-                    case 1:
-                        DrawSeat(x, y, key, num, location);
-                        break;
-
-                    case 2:
-                        DrawSeat(x - xDist, y, key, num, location);
-                        break;
-
-                    case 3:
-                        DrawSeat(x - xDist - xDist2, y + yDist, key, num, location);
-                        break;
-
-                    case 4:
-                        DrawSeat(x - xDist, y + yDist * 2, key, num, location);
-                        break;
                     case 5:
-                        DrawSeat(x, y + yDist * 2, key, num, location);
-                        break;
                     case 6:
-                        DrawSeat(x + xDist2, y + yDist, key, num, location);
+                    case 7:
+                    case 8:
+                        DrawSeat(x+xDist, y+(key+1%5)* yDist, key, num, location);
                         break;
+
 
                     default:
+                        DrawSeat(x, y+key*yDist, key, num, location);
                         break;
                 }
 
@@ -102,7 +102,7 @@ namespace CreatePlan.Examples
             chairKeys.Add(new ChairKey { Key = key.ToString(CultureInfo.InvariantCulture), Invisible = false });
             var chairRow = new ChairRow
             {
-                ChairSize = 25,
+                ChairSize = 41,
                 ChairKeys = chairKeys,
                 StartPositionX = x,
                 StartPositionY = y,
